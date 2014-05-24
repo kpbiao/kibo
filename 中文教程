@@ -1,0 +1,75 @@
+Kibo
+Kibo是一个简单的用于处理键盘事件的Javascript工具库。
+
+入门
+
+Kibo不依赖任何东西。你只要把它放到你的HTML代码里就行了：
+
+<script type="text/javascript" src="kibo.js"></script>
+下载 kibo.js
+创建一个Kibo对象实例，事件监听器就建立起来了：
+
+var k = new Kibo();
+Kibo对象的构造器有一个可选参数——你指定的接收事件的HTML元素。可以是input, textarea 或 select，缺省情况下是window.document。
+
+语法和用法
+
+本工具库提供了两个简单的方法——down and up， 它们都接收两个参数：一个按键或多个按键的组合或通配符，以及一个当有匹配的按键事件发生时调用的函数。这两个方法都可以链式调用。
+
+按键组合是指控制键和字符键的组合，或者简单的是一个或多个控制键。你可以向这两个方法传入单个或一个数组形式的多个组合键。
+
+当函数被调用时，事件将被传入这个函数。如果你的事件没有什么操作，忽略就行了。如果函数返回了false，事件的缺省操作将被阻止。
+
+Kibo里提供了一个lastKey方法，用来查询最后一次键盘事件是由什么键产生的。它会返回键的名称，如果在最后的一次按键是不支持的键，方法将返回undefined。除此之外，你还可以用lastKey判断是否是某个特定的功能键被按下，它会要么返回true 要么返回 false。
+
+受支持的按键
+
+Kibo 支持下面的这些按键，拼写这些按键名时不区分大小写：
+
+控制键 shift, ctrl, alt
+
+字母键 从a 到 z
+
+数字键 从0 到 9
+
+功能键 从f1 到 f12
+
+方向键 left, up, right, down
+
+enter, esc, space, backspace, delete, insert, tab, page_up, page_down, home, end, caps_lock, num_lock
+
+通配符 any, any arrow, any number, any letter, any f
+
+例子
+
+var k = new Kibo();
+单键或多键组合
+
+k.down(['up', 'down'], function() {
+  console.log('up or down arrow key pressed');
+}).up('tab', function() {
+  console.log('TAB key released');
+});
+含有控制键的组合键
+
+function handler() {
+  console.log('last key: ' + k.lastKey());
+}
+
+k.down(['shift q', 'ctrl alt x'], handler);
+通配符
+
+k.down(['any letter', 'any number'], function() {
+  console.log('letter or number key pressed');
+  console.log('shift key was' + (k.lastKey('shift') ? '' : ' not') + ' pressed');
+});
+
+k.up('any', function() {
+  console.log('key released');
+});
+阻止缺省事件
+
+k.down('f5', function() { return false; });
+License
+
+Kibo is released under the MIT License.
